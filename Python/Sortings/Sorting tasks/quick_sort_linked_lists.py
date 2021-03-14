@@ -6,12 +6,12 @@ class Node:
         self.next = None
         self.value = None
 
-def qsort(L):
-    if L is None:
+def qsort(head):
+    if head is None:
         return
-    if L.next is None:
-        return L
-    less, eq, great = partition(L)
+    if head.next is None:
+        return head
+    less, eq, great = partition(head)
     """
     print("less:", end=" ")
     printlist(less)
@@ -20,9 +20,9 @@ def qsort(L):
     print("great:", end=" ")
     printlist(great)
     """
-    L = insert_to_end(qsort(less), eq)
-    L = insert_to_end(L, qsort(great))
-    return L
+    head = insert_to_end(qsort(less), eq)
+    head = insert_to_end(head, qsort(great))
+    return head
 
 def partition(head):
     eq = Node()
@@ -32,29 +32,17 @@ def partition(head):
         if eq.value is None:
             eq.value = head.value
         elif head.value == eq.value:
-            tmp = Node()
-            tmp.value = head.value
-            tmp.next = eq
-            eq = tmp
-            tmp = None
+            eq = insert_to_begin(eq, head.value)
         elif head.value > eq.value:
             if great.value is None:
                 great.value = head.value
             else:
-                tmp = Node()
-                tmp.value = head.value
-                tmp.next = great
-                great = tmp
-                tmp = None
+                great = insert_to_begin(great, head.value)
         else:
             if less.value is None:
                 less.value = head.value
             else:
-                tmp = Node()
-                tmp.value = head.value
-                tmp.next = less
-                less = tmp
-                tmp = None
+                less = insert_to_begin(less, head.value)
         head = head.next
     if less.value is None:
         less = None
@@ -64,64 +52,54 @@ def partition(head):
         great = None
     return less, eq, great
 
-def insert_to_end(head,node):
+def insert_to_begin(head, value):
+    node = Node()
+    node.value = value
+    node.next = head
+    head = node
+    return head
+
+def insert_to_end(head, node):
     if head is None and node is not None:
         return node
-    if head is None and node is None:
-        return None
     tmp = head
     while tmp.next is not None:
         tmp = tmp.next
-    if node is None:
-        tmp.next = None
-    else:
-        tmp.next = node
+    tmp.next = node
     return head
 
 
-def tab2list( A ):
-  H = Node()
-  C = H
-  for i in range(len(A)):
-    X = Node()
-    X.value = A[i]
-    C.next = X
-    C = X
-  return H.next
+def arr_to_list(arr):
+    node = Node()
+    holder = node
+    for i in range(len(arr)):
+        tmp = Node()
+        tmp.value = arr[i]
+        holder.next = tmp
+        holder = tmp
+    return node.next
   
   
-def printlist( L ):
-  while L != None:
-    print( L.value, "->", end=" ")
-    L = L.next
-  print("|")
+def printlist(L):
+    while L is not None:
+        print(L.value, "->", end=" ")
+        L = L.next
+    print("|")
 
-  
-  
-  
 
 seed(42)
 
 n = 10
-T = [ randint(1,10) for i in range(10) ]
-L = tab2list( T )
+A = [randint(1, 10) for i in range(10)]
+list = arr_to_list(A)
 
-print("przed sortowaniem: L =", end=" ")
-printlist(L) 
-L = qsort(L)
-print("po sortowaniu    : L =", end=" ")
-printlist(L)
+print("Before sorting: ", end=" ")
+printlist(list)
+list = qsort(list)
+print("After sorting : ", end=" ")
+printlist(list)
 
-if L == None:
-  print("List jest pusta, a nie powinna!")
-  exit(0)
-
-P = L
-while P.next != None:
-  if P.value > P.next.value:
-    print("Błąd sortowania")
+if list is None:
+    print("List is empty, but it can`t be!")
     exit(0)
-  P = P.next
-    
-print("OK")
 
