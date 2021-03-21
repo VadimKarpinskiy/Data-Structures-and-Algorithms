@@ -1,8 +1,19 @@
+# Using random pivot of an array theoretically should protect our QuickSort algorithm complexity from goinng quadratic.
+# However, McILROY in his "A Killer Adversary for Quicksort" described a method that can almost always create
+# for which QuickSort`s complexity will be O(n^2). 
+
+import random
+
 def quick_sort(arr, p, r):
     if p < r:
         m = partition(arr, p, r)
         quick_sort(arr, p, m - 1)
         quick_sort(arr, m, r)
+
+def random_partition(arr, p, r):
+    ind = random.randint(p, r)
+    arr[ind], arr[r] = arr[r], arr[ind]
+    return partition(arr, p, r)
 
 def partition(arr, p, r):
     pivot = arr[r]
