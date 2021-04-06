@@ -1,30 +1,19 @@
 class Node:
-    def __init__(self, data = None, next = None):
+    def __init__(self, data=None, next=None):
         self.data = data
         self.next = next
 
-
-def add_to_end(node, data):
-    if node is None:
-        return Node(data, None)
-    while node.next is not None:
+def reverse(node):
+    res = None
+    while node is not None:
+        res = add_to_start(res, node.data)
         node = node.next
-    node.next = Node(data,None)
+    return res
 
 def add_to_start(node, data):
     tmp = Node(data)
     tmp.next = node
     return tmp
-
-def reverse(node):
-    if node is None:
-        return
-    head = node
-    while node.next is not None:
-        tmp = node.next
-        node.next = tmp.next
-        head = add_to_start(head,tmp.data)
-    return head
 
 def list_print(head):
     while head is not None:
@@ -33,17 +22,16 @@ def list_print(head):
     print()
 
 
+# Testing
 a = Node(5, None)
-add_to_end(a, 4)
-add_to_end(a, 3)
-add_to_end(a, 2)
-add_to_end(a, 1)
-add_to_end(a, 0)
+a = add_to_start(a, 4)
+a = add_to_start(a, 3)
+a = add_to_start(a, 2)
+a = add_to_start(a, 1)
+a = add_to_start(a, 0)
 
 list_print(a)
+list_print(reverse(a))
 
-a = add_to_start(a, 8)
-list_print(a)
-
-a = reverse(a)
-list_print(a)
+b = None
+list_print(reverse(b))
